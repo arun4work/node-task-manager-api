@@ -14,17 +14,11 @@ app.listen(port, () => {
     console.log('Server is up on port ' + port);
 });
 
-const Task = require('./models/task');
-const User = require('./models/user');
+// const multer = require('multer');
+// const upload = multer({
+//     dest: 'images',
+// });
 
-const main = async () => {
-    // const task = await Task.findById('5eca47944fcc700c046580d2');
-    // //fetch owner info from user table by populating the refernce field
-    // await task.populate('owner').execPopulate();
-    // console.log(task);
-    // const user = await User.findById('5eca46b9a03c9141e0b6f4a2');
-    // await user.populate('tasks').execPopulate();
-    // console.log(user.tasks);
-};
-
-main();
+// app.post('/upload', upload.single('upload'), async (req, res) => {
+//     res.send();
+// });
