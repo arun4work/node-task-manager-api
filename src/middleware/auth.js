@@ -5,7 +5,7 @@ const auth = async (req, res, next) => {
     try {
         const token = req.header('Authorization').replace('Bearer ', '');
         //verify JWT authentication
-        const decoded = jwt.verify(token, 'mynodecourse');
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
         //verify User auth through MONGO DB
         const user = await User.findOne({_id: decoded._id, 'tokens.token': token});
         if (!user) {
