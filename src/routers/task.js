@@ -12,7 +12,7 @@ router.post('/tasks', auth, async (req, res) => {
         await task.save();
         res.status(201).send(task);
     } catch (err) {
-        res.status(400).send(err);
+        res.status(400).send({error: err.message});
     }
 });
 
@@ -49,7 +49,7 @@ router.get('/tasks', auth, async (req, res) => {
             .execPopulate();
         res.send(req.user.tasks);
     } catch (err) {
-        res.status(500).send();
+        res.status(500).send({error: err.message});
     }
 });
 
@@ -58,11 +58,11 @@ router.get('/tasks/:id', auth, async (req, res) => {
     try {
         const task = await Task.findOne({_id, owner: req.user._id});
         if (!task) {
-            return res.status(404).send(task);
+            return res.status(404).send({error: 'No matches found!'});
         }
         res.send(task);
     } catch (err) {
-        res.status(500).send();
+        res.status(500).send({error: err.message});
     }
 });
 
@@ -80,13 +80,13 @@ router.patch('/tasks/:id', auth, async (req, res) => {
         //const task = await Task.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators: true});
         const task = await Task.findOne({_id: req.params.id, owner: req.user._id});
         if (!task) {
-            return res.status(404).send(task);
+            return res.status(404).send({error: 'No matches found!'});
         }
         updates.forEach((update) => (task[update] = req.body[update]));
         await task.save();
         res.send(task);
     } catch (err) {
-        res.status(400).send(err);
+        res.status(400).send({error: err.message});
     }
 });
 
@@ -94,11 +94,11 @@ router.delete('/tasks/:id', auth, async (req, res) => {
     try {
         const task = await Task.findOneAndDelete({_id: req.params.id, owner: req.user._id});
         if (!task) {
-            return res.status(404).send(task);
+            return res.status(404).send({error: 'No matches found!'});
         }
         res.send(task);
     } catch (err) {
-        res.status(500).send(err);
+        res.status(500).send({error: err.message});
     }
 });
 

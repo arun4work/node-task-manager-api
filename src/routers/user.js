@@ -14,7 +14,7 @@ router.post('/users', async (req, res) => {
         const token = await user.generateAuthToken();
         res.status(201).send({user, token});
     } catch (err) {
-        res.status(400).send(err);
+        res.status(400).send({error: err.message});
     }
 });
 
@@ -24,7 +24,7 @@ router.post('/users/login', async (req, res) => {
         const token = await user.generateAuthToken();
         res.send({user, token});
     } catch (err) {
-        res.status(400).send();
+        res.status(400).send({error: err.message});
     }
 });
 
@@ -36,7 +36,7 @@ router.post('/users/logout', auth, async (req, res) => {
         await req.user.save();
         res.send();
     } catch (err) {
-        res.status(500).send();
+        res.status(500).send({error: err.message});
     }
 });
 
@@ -46,7 +46,7 @@ router.post('/users/logoutall', auth, async (req, res) => {
         await req.user.save();
         res.send();
     } catch (err) {
-        res.status(500).send();
+        res.status(500).send({error: err.message});
     }
 });
 
@@ -56,7 +56,7 @@ router.get('/users/me', auth, async (req, res) => {
         //user is already set in req in middleware
         res.send(req.user);
     } catch (err) {
-        res.status(500).send();
+        res.status(500).send({error: err.message});
     }
 });
 
@@ -95,7 +95,7 @@ router.patch('/users/me', auth, async (req, res) => {
         await req.user.save();
         res.send(req.user);
     } catch (err) {
-        res.status(400).send();
+        res.status(400).send({error: err.message});
     }
 });
 
@@ -109,7 +109,7 @@ router.delete('/users/me', auth, async (req, res) => {
         sendCancelEmail(req.user.email, req.user.name);
         res.send(req.user);
     } catch (err) {
-        res.status(500).send(err);
+        res.status(500).send({error: err.message});
     }
 });
 
